@@ -3,7 +3,6 @@
 
 {% load staticfiles %}
 {% include 'head.html' %}
-
 <head>
 	<title>{{profile.username}}'s Profile</title>
 </head>
@@ -45,7 +44,7 @@
 				</a>
 			</div>
 			{% empty %}
-    		<h2>This person hasn't shared any memories yet</h2>
+    		<h2>This person hasn't shared any memory yet</h2>
 		{% endfor %}
 		</div>
 		<div class="sidebar">
@@ -64,19 +63,56 @@
 					</div>
 				</div>
 				<hr>
-				<div class="about-passage">
-					<p>{{profile.bio}}</p>
+				<div>
+					{% if isFriend %}
+						<p>
+							You and {{user.first_name}} are already friends.
+						</p>
+					{% elif requestreceive %}
+						<p>
+							<a href=/acceptfriend/{{user.id}}>Accept {{user.first_name}}'s friend request<a>
+						</p>
+					{% elif requestsent %}
+						<p>
+							You already sent friend request to {{user.first_name}}.
+						</p>
+					{% elif isSelf %}
+						<p>
+						{% for u in friendshiprequests %}
+							{% if c %}
+								{% if forloop.last %}
+								<span>and <a href=/profile-mod/{{u.id}}>{{u.first_name}}</a></span>
+								{% elif forloop.first %}
+								<span><a href=/profile-mod/{{u.id}}>{{u.first_name}}</a></span>
+								{% else %}
+								<span>,<a href=/profile-mod/{{u.id}}>{{u.first_name}}</a></span>
+								{% endif %}
+								{% if countrequest %}
+								want to add you as friends, please click the names to confirm.
+								{% endif %}
+							{% else %}
+								<p><a href=/profile-mod/{{u.id}}>{{u.first_name}}</a> wants to add you as friends, please click the name to confirm.</p>
+							{% endif %}
+						{% endfor %}
+						<p></p>
+					{% else %}
+						<a href=/addfriend/{{user.id}}>
+						Add {{user.first_name}} as your friend
+						</a>
+					{% endif %}
 				</div>
 			</div>
 			<div class="widget">
-				<a href=/friends/><h2>Friends</h2></a>
+				<a href=/friends/><h2>{{user.first_name}}'s Friends ({{countfriends}})</h2></a>
 				<div class="group flex friends">
-					<a class="thumb" href><div style="background-image: url({% static "img/preska.jpg" %})"><img class="overlay" src="{% static "img/overlay.png" %}"><span class="name">Preska</span></div></a>
-					<a class="thumb" href><div style="background-image: url({% static "img/samara.jpg" %})"><img class="overlay" src="{% static "img/overlay.png" %}"><span class="name">Samara</span></div></a>
-					<a class="thumb" href><div style="background-image: url({% static "img/zak.jpg" %})"><img class="overlay" src="{% static "img/overlay.png" %}"><span class="name">Zak</span></div></a>
-					<a class="thumb" href><div style="background-image: url({% static "img/aneesh.jpg" %})"><img class="overlay" src="{% static "img/overlay.png" %}"><span class="name">Aneesh</span></div></a>
-					<a class="thumb" href><div style="background-image: url({% static "img/eric.jpg" %})"><img class="overlay" src="{% static "img/overlay.png" %}"><span class="name">Eric</span></div></a>
-					<a class="thumb" href><div style="background-image: url({% static "img/matthew.jpg" %})"><img class="overlay" src="{% static "img/overlay.png" %}"><span class="name">Matthew</span></div></a>
+					{% for friend, friendProfileImage in link reversed %}
+					<a class="thumb" href=/profile-mod/{{friend.id}}>
+						<div style="background-image: url({{friendProfileImage|cut:'memorylane'}})"><img class="overlay" src="{% static "img/overlay.png" %}"><span class="name">{{friend.first_name}}</span>
+						</div>
+					</a>
+					{% empty %}
+		    		<h2>This person hasn't met any friend yet</h2>
+					{% endfor %}
 				</div>
 			</div>
 		</div>
