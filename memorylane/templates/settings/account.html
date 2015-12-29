@@ -52,7 +52,7 @@
                     <div class="flex settings-container">
                         <div>
                             <div class="primary-info flex">
-                                <div class="preview" style="background-image:url({{profile.image|cut:'memorylane'}})">
+                                <div class="preview" id="newphoto" style="background-image:url({{profile.image|cut:'memorylane'}})">
                                     <div class="overlay">
                                         <p>Update profile photo</p>
                                         <input type="file" name="media" accept="image/gif, image/jpeg, image/jpg, image/png" class="file-input js-tooltip" id="imgInp">
@@ -83,5 +83,33 @@
             </div>
         </div>
     </div>
+    <script src="{% static "js/googlemaps.js" %}"></script>
+        <script>
+        function readURL(input) {
+            if (input.files && input.files[0]) {
+                var reader = new FileReader();
+                reader.onload = function (e) {
+                    $('#newphoto').css('background-image', "url(" + e.target.result + ")");
+                }
+                reader.readAsDataURL(input.files[0]);
+            }
+            else {
+                var img = input.value;
+                    $('#newphoto').css('background-image', img);
+            }
+        }
+        $("#imgInp").change(function(){
+                readURL(this);      
+            });
+    
+        function clearFileInput(id) { 
+            var control = $("#imgInp");
+            control.replaceWith( control = control.clone( true ) );
+        };
+        $("#trash").click(function() {
+            clearFileInput("imgInp");
+            $('#newphoto').attr('src', "{% static "img/transparent.png" %}");
+        });
+    </script>
 </body>
 </html>
