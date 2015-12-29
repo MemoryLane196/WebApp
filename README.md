@@ -14,9 +14,16 @@ An online web & mobile journaling service that enables its users to take picture
 
 ## Video Walkthrough 
 
+    Change profile photo
 <img src='http://i.imgur.com/1Fg3HbX.gif' title='Change profile photo' width='500' alt='Change profile photo' />
-<img src='http://i.imgur.com/Q6T4TIJ.gif' title='Add new friends' width='500' alt='Add new friensd' />
+
+    Add new friends
+<img src='http://i.imgur.com/Q6T4TIJ.gif' title='Add new friends' width='500' alt='Add new friends' />
+
+    Search for memories about a location
 <img src='http://i.imgur.com/0R1ggXW.gif' title='Search location' width='500' alt='Search location' />
+
+    Add new memory
 <img src='http://i.imgur.com/zxWzLAH.gif' title='Add new memory' width='500' alt='Add new memory' />
 
 GIF created with [LiceCap](http://www.cockos.com/licecap/).
