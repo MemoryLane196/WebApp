@@ -5,7 +5,7 @@ An online web & mobile journaling service that enables its users to take picture
 
 ## User Stories
 
-* [ ] You can write a memory about some location by taking a panorama photos and add your feelings in words. 
+* [ ] You can write a memory about some location by taking a panorama photo and add your feelings in words. 
 * [ ] You can go to the Timeline page by clicking the Memory Lane icon on the top of each page.
 * [ ] You can go to the location page by clicking on maps, location names, or typing the name in the searching bar (the searching bar accpets any language).
 * [ ] You can change your profile settings by clicking the setting icon.
