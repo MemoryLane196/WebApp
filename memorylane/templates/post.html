@@ -2,6 +2,7 @@
 <html lang="en">
 {% load staticfiles %}
 {% include 'head.html' %}
+
 <body>
     {% include 'nav.html' %}
     <img src="{{image}}" class="panoramaResize">
@@ -18,7 +19,7 @@
                     <div class="content">
                         <p class="textRemember">I remember...</p>
                         <p class="textBody">
-                        {{memory.description}}
+                        {{memory.description}}{{tags}}
                         </p>                        
                     </div>                    
                     <div class="location-memory">
@@ -61,18 +62,39 @@
                             </div>
                         </div>
                     </a>
-                    <p class="textWith">with...</p>
+                    <p class="textWith" id="addTags">with...</p>
+                    <a href="javascript:add();"><p id = "t">(click to add more people)</p></a>
+                    <div id = "tag" style="display: none">
+                        <form method="get" action=/addTags/{{memory.id}}>
+                            <input placeholder="Enter the usernames of those you have this memory with and seperate them by comma. &#xf002;" name="q" id="id_q" value="{{request.GET.q}}" s>
+                        </form>
+                    </div>
                     <div class="group flex friends">
-                        <a class="thumb" href="/profile-mod/"><div style="background-image: url({% static "img/preska.jpg" %})"><img class="overlay" src="{% static "img/overlay.png" %}"><span class="name">Preska</span></div></a>
-                        <a class="thumb" href="/profile-mod/"><div style="background-image: url({% static "img/samara.jpg" %})"><img class="overlay" src="{% static "img/overlay.png" %}"><span class="name">Samara</span></div></a>
-                        <a class="thumb" href="/profile-mod/"><div style="background-image: url({% static "img/zak.jpg" %})"><img class="overlay" src="{% static "img/overlay.png" %}"><span class="name">Zak</span></div></a>
-                        <a class="thumb" href="/profile-mod/"><div style="background-image: url({% static "img/aneesh.jpg" %})"><img class="overlay" src="{% static "img/overlay.png" %}"><span class="name">Aneesh</span></div></a>
+                        {% for user, image in tag %}
+                        <a class="thumb" href=/profile-mod/{{user.id}}>
+                        <div style="background-image: url({{image|cut:'memorylane'}})"><img class="overlay" src="{% static "img/overlay.png" %}"><span class="name">{{user.first_name}}</span>
+                        </div>
+                        </a>
+                        {% endfor %}
                     </div>
                 </div>
             </div>
         </div>
     </div>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.3/jquery.min.js"></script>
     <script src="{% static "js/googlemaps.js" %}"></script>
+    <script>
+    function add() {
+        document.getElementById("tag").style.display="block";
+        document.getElementById("t").style.display="none";
+    }
+    function script(e) {
+        if (e.keyCode == 13) {
+            document.getElementById("tag").style.display="none";
+            document.getElementById("t").style.display="block";
+        }
+    }
+    </script>
     <script>
     $(function(){ // document ready
         if (!!$('.sticky').offset()) { // make sure ".sticky" element exists

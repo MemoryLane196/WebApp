@@ -42,6 +42,7 @@ INSTALLED_APPS = (
     'django.contrib.staticfiles',
     'memorylane',
     'friendship',
+    'taggit',
 )
 
 MIDDLEWARE_CLASSES = (

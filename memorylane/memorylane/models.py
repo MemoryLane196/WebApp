@@ -1,4 +1,5 @@
 from django.db import models
+from taggit.managers import TaggableManager
 
 class UserProfile(models.Model):
     username = models.CharField(max_length=5000) 
@@ -26,6 +27,7 @@ class Memory(models.Model):
     description = models.TextField()
     author = models.CharField(max_length=100)
     date_created = models.DateField()
+    tags = TaggableManager()
 
     def __str__(self):
     	return self.name

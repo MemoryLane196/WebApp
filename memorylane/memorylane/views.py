@@ -79,6 +79,21 @@ def post(request, memory_id):
     author = get_object_or_404(User, username=memory.author)
     authorProfile = get_object_or_404(UserProfile, username=memory.author)
     profile = get_object_or_404(UserProfile, username=request.user.username)
+    tags = memory.tags.all()
+    #tag = tags[8]
+    images = []
+    users = []
+    tag = []
+    for t in tags:
+        t = str(t)
+        try:
+            user = get_object_or_404(User, username=t)
+            userProfile = get_object_or_404(UserProfile, username=t)
+            users.append(user)
+            images.append(userProfile.image)
+            tag = zip(users, images)
+        except:
+            pass
     location = memory.location
     gmaps = googlemaps.Client(key="AIzaSyCdgUowprALYpEowr3eIYlKq_8M0ldb6-I")
     geocode_result = gmaps.geocode(location)
@@ -96,7 +111,18 @@ def post(request, memory_id):
         authors.append(aa)
     link=zip(memories, authorProfileImages, authorProfiles, authors)
     all_friends = Friend.objects.friends(request.user)
-    return render(request, 'post.html', {'memory': memory, 'author': author, 'authorProfile': authorProfile, 'image' : memory.image.name[10:], 'memories': memories, 'all_friends': all_friends, 'link': link, 'profile': profile})
+    return render(request, 'post.html', {'memory': memory, 'author': author, 'authorProfile': authorProfile, 'image' : memory.image.name[10:], 'memories': memories, 'all_friends': all_friends, 'link': link, 'profile': profile, "tag":tag})
+
+def addTags(request, memory_id):
+    t = request.GET[u'q']
+    t = str(t)
+    t = t.split(",")
+    for m in t:
+        m = m.strip()
+        m = str(m).title()
+        memory = get_object_or_404(Memory, pk=memory_id)
+        memory.tags.add(m)
+    return post(request, memory_id)
 
 def newpost(request):
     if not request.user.is_authenticated():
