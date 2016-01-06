@@ -1,6 +1,5 @@
 
 ## Memory Lane
-####memolane.tk
 
 An online web & mobile journaling service that enables its users to take pictures and write stories about locations，and thus create a setting to their memories.
 
@@ -28,11 +27,6 @@ An online web & mobile journaling service that enables its users to take picture
 <img src='http://i.imgur.com/zxWzLAH.gif' title='Add new memory' width='500' alt='Add new memory' />
 
 GIF created with [LiceCap](http://www.cockos.com/licecap/).
-
-## Notes
-
-The current version is still in testing. 
-Please install python packpage googlemaps before run the server.
 
 ## License
 

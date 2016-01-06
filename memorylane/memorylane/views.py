@@ -78,10 +78,9 @@ def post(request, memory_id):
     memory = get_object_or_404(Memory, pk=memory_id)
     author = get_object_or_404(User, username=memory.author)
     authorProfile = get_object_or_404(UserProfile, username=memory.author)
-    duser = get_object_or_404(User, username=request.user.username)
-    t = False    #test for whether to show tags
-    if duser.id==author.id:
-        t = True
+    st = False    #test for whether to show tags
+    if request.user.id==author.id:
+        st = True
     profile = get_object_or_404(UserProfile, username=request.user.username)    
     tags = memory.tags.all()
     images = []
@@ -114,7 +113,7 @@ def post(request, memory_id):
         authors.append(aa)
     link=zip(memories, authorProfileImages, authorProfiles, authors)
     all_friends = Friend.objects.friends(request.user)
-    return render(request, 'post.html', {'memory': memory, 'author': author, 'authorProfile': authorProfile, 'image' : memory.image.name[10:], 'memories': memories, 'all_friends': all_friends, 'link': link, 'profile': profile, "duser": duser, "tag":tag, "t":t})
+    return render(request, 'post.html', {'memory': memory, 'author': author, 'authorProfile': authorProfile, 'image' : memory.image.name[10:], 'memories': memories, 'all_friends': all_friends, 'link': link, 'profile': profile, "tag":tag, "st":st})
 
 def addTags(request, memory_id):
     t = request.GET[u'q']
@@ -153,6 +152,13 @@ def newpostsubmit(request):
         m = Memory(name=request.POST['title'], author=request.user.username, first_name=request.user.first_name, last_name=request.user.last_name, location=request.POST['location'], lat=lat, lng=lng, date_created=datetime.now(), description=request.POST['note_text'], image=request.FILES['media'], author_image=profile.image)
         m.save()
         memory = get_object_or_404(Memory, pk=m.id)
+        t = request.POST['tags']
+        t = str(t)
+        t = t.split(",")
+        for mt in t:
+            mt = mt.strip()
+            mt = str(mt).title()
+        memory.tags.add(mt)
         author = get_object_or_404(User, username=memory.author)
         return post(request, m.id)
         message = 'Successfully added a new memory'
@@ -402,7 +408,6 @@ def addfriend(request, pfriend_id):
 def unfriend(request, ufriend_id):
     ufriend = get_object_or_404(User, id=ufriend_id)
     Friend.objects.remove_friend(ufriend, request.user)
-    message = 'You submitted an empty form.'
     return profilemod(request, ufriend_id)
 
 def acceptfriend(request, pfriend_id):

@@ -120,7 +120,7 @@
 	<script src="{% static "js/googlemaps.js" %}"></script>
 	<script>
 	function unfriend() {
-		var result = confirm("Want to delete?");
+		var result = confirm("Are you sure about deleting this friendship?");
 		if (result) {
 	        window.location.replace("/unfriend/{{user.id}}")
 		}
