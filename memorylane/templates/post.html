@@ -12,7 +12,9 @@
         <div class = "panoramaElement">
             <div class="panoramaHeader">
                 <p class="panoramaLeft">{{memory.name}}</p>
-                <p class="panoramaRight"><img id="author-pic" src="{{authorProfile.image|cut:'memorylane'}}" alt="Author">{{author.first_name}} {{author.last_name}} | {{memory.date_created}}</p>
+                <a href=/profile-mod/{{author.id}}>
+                    <p class="panoramaRight"><img id="author-pic" src="{{authorProfile.image|cut:'memorylane'}}" alt="Author">{{author.first_name}} {{author.last_name}} | {{memory.date_created}}</p>
+                </a>
             </div>
             <div class="memory flex">
                 <div class="memory-body">        
@@ -62,13 +64,16 @@
                             </div>
                         </div>
                     </a>
-                    <p class="textWith" id="addTags">with...</p>
-                    <a href="javascript:add();"><p id = "t">(click to add more people)</p></a>
+                    <p class="textWith" id="addTags">with...
+                    {% if t %}
+                        <a href="javascript:add();">(<i class="fa fa-user-plus"></i>)</a>
+                    </p>
                     <div id = "tag" style="display: none">
                         <form method="get" action=/addTags/{{memory.id}}>
-                            <input placeholder="Enter the usernames of those you have this memory with and seperate them by comma. &#xf002;" name="q" id="id_q" value="{{request.GET.q}}" s>
+                            <input class="" placeholder="Enter the usernames of those you have this memory with and seperate them by comma. &#xf041;" autocomplete="off" name="q" id="id_q" value="{{request.GET.q}}" s>
                         </form>
                     </div>
+                    {% endif %}
                     <div class="group flex friends">
                         {% for user, image in tag %}
                         <a class="thumb" href=/profile-mod/{{user.id}}>

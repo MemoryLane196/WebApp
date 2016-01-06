@@ -49,5 +49,6 @@ urlpatterns = [
     url(r'^imageUpload/$', views.imageUpload, name='imageUpload'),
     url(r'^addfriend/(?P<pfriend_id>[0-9]+)$', views.addfriend, name='addfriend'),
     url(r'^acceptfriend/(?P<pfriend_id>[0-9]+)$', views.acceptfriend, name='acceptfriend'),
+    url(r'^unfriend/(?P<ufriend_id>[0-9]+)$', views.unfriend, name='unfriend'),
     url(r'^addTags/(?P<memory_id>[0-9]+)$', views.addTags, name='addTags'),
 ]

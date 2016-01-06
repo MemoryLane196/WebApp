@@ -66,7 +66,7 @@
 				<div>
 					{% if isFriend %}
 						<p>
-							You and {{user.first_name}} are already friends.
+							You and {{user.first_name}} are already friends. <a id="unfriend" href="javascript:unfriend();">(unfriend)</a>
 						</p>
 					{% elif requestreceive %}
 						<p>
@@ -118,5 +118,13 @@
 		</div>
 	</div>
 	<script src="{% static "js/googlemaps.js" %}"></script>
+	<script>
+	function unfriend() {
+		var result = confirm("Want to delete?");
+		if (result) {
+	        window.location.replace("/unfriend/{{user.id}}")
+		}
+	}
+	</script>
 </body>
 </html>
