@@ -2,32 +2,12 @@
 {% load staticfiles %}
 {% block following%} is-active {% endblock %}
 {% block loadPeople %}
-<a class="thumb" href="/profile-mod/">
-	<div style="background-image: url({% static "img/preska.jpg" %})">
-		<div class="overlay">
-			<img src="{% static "img/overlay.png" %}">
-			<p>{{bio}}I love Frouble.</p>
-			<span class="name">Preska</span>
+{% for following, followingProfileImage in link reversed %}
+	<a class="thumb" href=/following/{{following.id}}>
+		<div style="background-image: url({{followingProfileImage|cut:'memorylane'}})"><img class="overlay" src="{% static "img/overlay.png" %}"><span class="name">{{following.first_name}}</span>
 		</div>
-	</div>
-</a>
-<a class="thumb" href="/profile-mod/">
-	<div style="background-image: url({% static "img/samara.jpg" %})">
-		<div class="overlay">
-			<img src="{% static "img/overlay.png" %}">
-			<p>{{bio}}I love Frouble.</p>
-			<span class="name">Samara</span>
-		</div>
-	</div>
-</a>
-<a class="thumb" href="/profile-mod/">
-	<div style="background-image: url({% static "img/zak.jpg" %})">
-		<div class="overlay">
-			<img src="{% static "img/overlay.png" %}">
-			<p>{{bio}}I love Frouble.</p>
-			<span class="name">Zac</span>
-		</div>
-	</div>
-</a>
-
+	</a>
+	{% empty %}
+	<h2>{{user.first_name}} hasn't followed anyone yet.</h2>
+	{% endfor %}
 {% endblock %}

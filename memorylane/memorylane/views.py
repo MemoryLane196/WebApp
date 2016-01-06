@@ -256,20 +256,82 @@ def logout(request):
     a_logout(request)
     return HttpResponseRedirect('/login/')    
 
-def friends(request):
+def friends(request, authorProfile_id):
     if not request.user.is_authenticated():
         return HttpResponseRedirect('/login/')
-	return render(request, 'friends.html', {})
+    user = get_object_or_404(User, id=authorProfile_id)
+    author = get_object_or_404(UserProfile, username=user.username)
+    username = request.user.username
+    first_name = user.first_name
+    last_name = user.last_name
+    all_friends = Friend.objects.friends(user)
+    countfriends = len(all_friends)
+    friendsProfileImages=[]
+    for friend in all_friends:
+        friendProfile = get_object_or_404(UserProfile, username=friend.username)
+        friendsProfileImages.append(friendProfile.image)
+    link=zip(all_friends, friendsProfileImages)
+    profile = get_object_or_404(UserProfile, username=request.user.username)
+    actualUser = request.user
+    isFriend = Friend.objects.are_friends(actualUser, user)
+    isSelf = actualUser==user
+    requests = Friend.objects.unread_requests(user=request.user)
+    friendshiprequests = []
+    requestreceive = False
+    for r in requests:
+        r = str(r)
+        idn = r.split()[1][1:]
+        if authorProfile_id == idn:
+            requestreceive = True
+        requestfrom = get_object_or_404(User, id=idn)
+        friendshiprequests.append(requestfrom)
+    countrequest = len(friendshiprequests)
+    c = 0
+    if countrequest>=2:
+        c = 1
+    sent = Friend.objects.sent_requests(user=request.user)
+    requestsent = False
+    for s in sent:
+        s = str(s)
+        ids = s.split()[4][1:]
+        if authorProfile_id == ids:
+            requestsent = True
+    return render(request, 'friends.html', {"user": user, "profile": profile,"author": author, "all_friends": all_friends, "actualUser": actualUser, "link": link, "isFriend": isFriend, "isSelf": isSelf, "countfriends": countfriends, "friendshiprequests": friendshiprequests, "requestreceive": requestreceive, "c": c, "requestsent": requestsent, "countrequest": countrequest, "first_name": first_name, "last_name": last_name})
 
-def following(request):
+def following(request, authorProfile_id):
     if not request.user.is_authenticated():
         return HttpResponseRedirect('/login/')
-    return render(request, 'following.html', {})
-
-def follower(request):
+    user = get_object_or_404(User, id=authorProfile_id)
+    author = get_object_or_404(UserProfile, username=user.username)
+    username = request.user.username
+    first_name = user.first_name
+    last_name = user.last_name
+    all_following = Follow.objects.following(user)
+    countfollowing = len(all_following)
+    followingProfileImages=[]
+    for following in all_following:
+        followingProfile = get_object_or_404(UserProfile, username=following.username)
+        followingProfileImages.append(followingProfile.image)
+    link=zip(all_following, followingProfileImages)
+    profile = get_object_or_404(UserProfile, username=request.user.username)
+    return render(request, 'following.html', {"user": user, "profile": profile,"author": author, "all_following": all_following, "link": link, "first_name": first_name, "last_name": last_name, "countfollowing": countfollowing})
+def follower(request, authorProfile_id):
     if not request.user.is_authenticated():
         return HttpResponseRedirect('/login/')
-    return render(request, 'follower.html', {})
+    user = get_object_or_404(User, id=authorProfile_id)
+    author = get_object_or_404(UserProfile, username=user.username)
+    username = request.user.username
+    first_name = user.first_name
+    last_name = user.last_name
+    all_followers = Follow.objects.followers(user)
+    countfollowers = len(all_followers)
+    followersProfileImages=[]
+    for follower in all_followers:
+        followerProfile = get_object_or_404(UserProfile, username=follower.username)
+        followersProfileImages.append(followerProfile.image)
+    link=zip(all_followers, followersProfileImages)
+    profile = get_object_or_404(UserProfile, username=request.user.username)
+    return render(request, 'follower.html', {"user": user, "profile": profile,"author": author, "all_followers": all_followers, "link": link, "first_name": first_name, "last_name": last_name, "countfollowers": countfollowers})
 
 def timeline(request):
     if not request.user.is_authenticated():

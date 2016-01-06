@@ -44,7 +44,11 @@
 				</a>
 			</div>
 			{% empty %}
-    		<h2>This person hasn't shared any memory yet</h2>
+    		{% if isSelf %}
+			<h3>You don't have any memory.</h2>
+			{% else %}
+			<h3>{{user.first_name}} doesn't have any memory.</h2>
+			{% endif %}
 		{% endfor %}
 		</div>
 		<div class="sidebar">
@@ -103,7 +107,7 @@
 				</div>
 			</div>
 			<div class="widget">
-				<a href=/friends/><h2>{{user.first_name}}'s Friends ({{countfriends}})</h2></a>
+				<a href=/friends/{{user.id}}><h2>{{user.first_name}}'s Friends ({{countfriends}})</h2></a>
 				<div class="group flex friends">
 					{% for friend, friendProfileImage in link reversed %}
 					<a class="thumb" href=/profile-mod/{{friend.id}}>
@@ -111,7 +115,11 @@
 						</div>
 					</a>
 					{% empty %}
-		    		<h2>This person hasn't met any friend yet</h2>
+					{% if isSelf %}
+		    		<h3>You haven't met any friend yet.</h2>
+		    		{% else %}
+		    		<h3>{{user.first_name}} hasn't met any friend yet.</h2>
+		    		{% endif %}
 					{% endfor %}
 				</div>
 			</div>
